@@ -1,0 +1,1 @@
+# fungible-tokens-sticker-album
