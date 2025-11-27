@@ -38,16 +38,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="mt-20 text-center">
-        <h2 className="text-3xl font-bold text-green-700 mb-4">
-          Comece sua coleção agora mesmo
-        </h2>
-        <button className="px-8 py-3 bg-green-600 text-white text-lg rounded-full shadow-md hover:bg-green-700 transition">
-          Criar Conta
-        </button>
-      </section>
-
       {/* Footer */}
       <footer className="mt-24 text-gray-500 text-sm">
         © {new Date().getFullYear()} Álbum de Figurinhas — Plataforma de Colecionadores

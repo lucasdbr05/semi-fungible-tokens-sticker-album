@@ -1,28 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-
-// Simulação de login (troque depois pela autenticação real)
-// Coloque 'true' para simular um usuário logado.
-const USER_LOGGED_IN = false;
+import useWallet from "../hooks/useWallet";
 
 export default function Navbar() {
-  const [logged] = useState(USER_LOGGED_IN);
+  const { address, isLogged, connectWallet, disconnectWallet } = useWallet();
 
   return (
     <nav className="w-full bg-white border-b border-green-200 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-
-        {/* Logo */}
+        
         <Link
           href="/"
-          className="text-2xl font-extrabold text-green-700 drop-shadow-sm hover:opacity-80 transition"
+          className="text-2xl font-extrabold text-green-700 hover:opacity-80 transition"
         >
           Figurinhas ⚽
         </Link>
 
-        {/* Links */}
         <div className="hidden md:flex items-center gap-8">
           <Link
             href="/"
@@ -38,8 +32,8 @@ export default function Navbar() {
             Contato
           </Link>
 
-          {/* Mostrar somente se estiver logado */}
-          {logged && (
+          {/* Apenas quando logado */}
+          {isLogged && (
             <>
               <Link
                 href="/colecao"
@@ -58,14 +52,20 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Botão CTA — pode virar "Perfil" se logado */}
-        {!logged ? (
-          <button className="hidden md:inline px-5 py-2 bg-green-600 text-white rounded-full shadow hover:bg-green-700 transition">
-            Entrar
+        {/* Botão de Login Web3 */}
+        {!isLogged ? (
+          <button
+            onClick={connectWallet}
+            className="hidden md:inline px-5 py-2 bg-green-600 text-white rounded-full shadow hover:bg-green-700 transition"
+          >
+            Conectar Carteira
           </button>
         ) : (
-          <button className="hidden md:inline px-5 py-2 bg-green-700 text-white rounded-full shadow hover:bg-green-800 transition">
-            Meu Perfil
+          <button
+            onClick={disconnectWallet}
+            className="hidden md:inline px-5 py-2 bg-green-700 text-white rounded-full shadow hover:bg-green-800 transition"
+          >
+            {address.slice(0, 6)}...{address.slice(-4)}
           </button>
         )}
       </div>
