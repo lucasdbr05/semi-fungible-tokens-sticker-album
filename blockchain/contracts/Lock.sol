@@ -1,34 +1,58 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.28;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+// Import OpenZeppelin implementations
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract Lock {
-  uint public unlockTime;
-  address payable public owner;
+contract Lock is ERC1155, Ownable {
+    using Strings for uint256;
 
-  event Withdrawal(uint amount, uint when);
+    // Track total number of different figurinhas created
+    uint256 public nextId = 1;
 
-  constructor(uint _unlockTime) payable {
-    require(
-      block.timestamp < _unlockTime,
-      "Unlock time should be in the future"
-    );
+    // Base URI for metadata (e.g. IPFS)
+    string public baseURI;
 
-    unlockTime = _unlockTime;
-    owner = payable(msg.sender);
-  }
+    // Map for rarity or supply limits (optional)
+    mapping(uint256 => uint256) public maxSupply;
+    mapping(uint256 => uint256) public minted;
 
-  function withdraw() public {
-    // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-    // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    constructor(string memory _baseURI) ERC1155("") Ownable(msg.sender) {
+        baseURI = _baseURI; // e.g. "ipfs://QmABC123/"
+    }
 
-    require(block.timestamp >= unlockTime, "You can't withdraw yet");
-    require(msg.sender == owner, "You aren't the owner");
+    // Override tokenURI (returns the metadata link)
+    function uri(uint256 _id) public view override returns (string memory) {
+        return string(abi.encodePacked(baseURI, _id.toString(), ".json"));
+    }
 
-    emit Withdrawal(address(this).balance, block.timestamp);
+    // Mint a new figurinha type (admin only)
+    function createFigurinha(uint256 _amount, uint256 _maxSupply) external onlyOwner {
+        uint256 id = nextId;
+        nextId++;
+        maxSupply[id] = _maxSupply;
+        _mint(msg.sender, id, _amount, "");
+        minted[id] = _amount;
+    }
 
-    owner.transfer(address(this).balance);
-  }
+    // // Mint existing figurinha to someone (owner-controlled)
+    // function mint(address to, uint256 id, uint256 amount) external onlyOwner {
+    //     require(minted[id] + amount <= maxSupply[id], "Exceeds max supply");
+    //     _mint(to, id, amount, "");
+    //     minted[id] += amount; 
+    // }
+
+    // Optional: set a new base URI (if you move metadata)
+    function setBaseURI(string memory newuri) external onlyOwner {
+        baseURI = newuri;
+    }
+
+    function trade(){
+      _transfer(from, to, id, amount);
+    }
+    function buyPack(){
+
+    }
 }
