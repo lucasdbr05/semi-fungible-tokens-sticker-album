@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import contractInfo from "../../../contract-info.json";
 
 // Endereço do contrato ERC-1155 na Sepolia
-const CONTRACT_ADDRESS = "0x7a6153E88838843a65dF29860Eb4EDe77d204351";
+const CONTRACT_ADDRESS = contractInfo.address;
+console.log(CONTRACT_ADDRESS);
 
 // IDs das figurinhas (1 a 20)
 const STICKERS = Array.from({ length: 20 }, (_, i) => i + 1);
 
 // ABI mínima do ERC-1155
 const abi = [
-  "function balanceOf(address account, uint256 id) view returns (uint256)"
+  "function balanceOf(address account, uint256 id) view returns (uint256)",
 ];
 
 interface Metadata {
@@ -48,7 +50,7 @@ export default function ColecaoPage() {
       meta[id] = {
         name: json.name,
         team: json.time,
-        image: json.image
+        image: json.image,
       };
     }
 

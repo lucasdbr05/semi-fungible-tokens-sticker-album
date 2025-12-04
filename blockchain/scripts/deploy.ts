@@ -1,29 +1,33 @@
+import fs from "fs";
 import { ethers } from "hardhat";
+import contractVariables from "../contract-variables.json";
 
 async function main() {
   console.log("🚀 Iniciando deploy do contrato Lock na Sepolia...\n");
 
   // Substitua pela sua URI do IPFS ou servidor de metadados
-  const baseURI = "ipfs://QmYourIPFSHash/";
+  const baseURI = contractVariables.baseURI;
 
   console.log("📝 Base URI:", baseURI);
-  
+
   const Lock = await ethers.getContractFactory("Lock");
   console.log("⏳ Fazendo deploy do contrato...");
-  
+
   const lock = await Lock.deploy(baseURI);
   await lock.waitForDeployment();
 
   const address = await lock.getAddress();
   console.log(`✅ Contrato Lock deployed em: ${address}\n`);
-  
+
   // Criar algumas figurinhas de exemplo
   console.log("🎴 Criando figurinhas de exemplo...");
-  
-  const numStickers = 20; // Número de tipos diferentes de figurinhas
+
+  const numStickers = contractVariables.numDifSticker; // Número de tipos diferentes de figurinhas
+
+  //VER DE TIRAR ISSO AQUI COM BASE NA LOGICA DE NEGÓCIOS
   const initialSupply = 50; // Quantidade inicial mintada de cada
   const maxSupply = 500; // Suprimento máximo de cada figurinha
-  
+
   for (let i = 1; i <= numStickers; i++) {
     process.stdout.write(`   Criando figurinha ${i}/${numStickers}...`);
     const tx = await lock.createFigurinha(initialSupply, maxSupply);
@@ -31,19 +35,34 @@ async function main() {
     process.stdout.write(" ✓\n");
   }
 
+  const pack_price = contractVariables.packPrice;
+  const amount_per_pack = contractVariables.amountPerPack;
+
+  const data = {
+    network: "sepolia",
+    address: address,
+    pack_price: pack_price,
+    amount_per_pack: amount_per_pack,
+    different_stickers: numStickers,
+  };
+
+  fs.writeFileSync("../contract-info.json", JSON.stringify(data, null, 5));
+
   console.log("\n=== ✨ CONFIGURAÇÃO CONCLUÍDA ===\n");
   console.log(`📍 Endereço do Contrato: ${address}`);
   console.log(`🔗 Explorador: https://sepolia.etherscan.io/address/${address}`);
   console.log(`💰 Preço do Pacote: 0.001 ETH`);
   console.log(`🎴 Figurinhas por Pacote: 5`);
   console.log(`📦 Total de Tipos de Figurinhas: ${numStickers}`);
-  
+
   console.log("\n=== 📋 PRÓXIMOS PASSOS ===\n");
   console.log("1. Copie o endereço do contrato acima");
   console.log("2. Abra o arquivo: my-app/app/loja/page.tsx");
   console.log(`3. Substitua "SEU_ENDERECO_DO_CONTRATO_AQUI" por: ${address}`);
   console.log("4. Acesse a loja no frontend e comece a comprar figurinhas!");
-  console.log("\n💡 Dica: Você pode obter ETH de teste em https://sepoliafaucet.com/\n");
+  console.log(
+    "\n💡 Dica: Você pode obter ETH de teste em https://sepoliafaucet.com/\n"
+  );
 }
 
 main()
