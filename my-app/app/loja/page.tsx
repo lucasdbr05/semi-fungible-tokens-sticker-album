@@ -1,28 +1,33 @@
 "use client";
 
-import { useState } from "react";
 import BuyPackComponent from "@/components/BuyPack";
 import useBalance from "@/hooks/useBalance";
+import { useState } from "react";
+import contractInfo from "../../../contract-info.json";
 
 // Substitua pelo endereço do seu contrato após o deploy na Sepolia
-const CONTRACT_ADDRESS = "0x7a6153E88838843a65dF29860Eb4EDe77d204351";
+const CONTRACT_ADDRESS = contractInfo.address;
 
 // ABI mínima necessária para interagir com o contrato
 const CONTRACT_ABI = [
   "function buyPack() external payable",
   "function packPrice() external view returns (uint256)",
   "function stickersPerPack() external view returns (uint256)",
-  "event PackPurchased(address indexed buyer, uint256[] tokenIds, uint256 totalPaid)"
+  "event PackPurchased(address indexed buyer, uint256[] tokenIds, uint256 totalPaid)",
 ];
 
 export default function LojaPage() {
-  const savedWallet = typeof window !== "undefined" ? localStorage.getItem("wallet_address") : null;
+  const savedWallet =
+    typeof window !== "undefined"
+      ? localStorage.getItem("wallet_address")
+      : null;
   const [wallet] = useState<string | null>(savedWallet);
-  const { balance, error, wrongNetwork, refresh, switchToSepolia } = useBalance(wallet);
+  const { balance, error, wrongNetwork, refresh, switchToSepolia } =
+    useBalance(wallet);
   const [purchasedStickers, setPurchasedStickers] = useState<string[]>([]);
 
   const handleSuccess = (tokenIds: string[]) => {
-    setPurchasedStickers(prev => [...prev, ...tokenIds]);
+    setPurchasedStickers((prev) => [...prev, ...tokenIds]);
     refresh(); // Atualizar saldo após compra
   };
 
@@ -30,7 +35,9 @@ export default function LojaPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-8">
         <div className="max-w-4xl mx-auto text-center mt-20">
-          <h1 className="text-4xl font-bold text-green-700 mb-4">Loja de Figurinhas</h1>
+          <h1 className="text-4xl font-bold text-green-700 mb-4">
+            Loja de Figurinhas
+          </h1>
           <p className="text-xl text-gray-600 mb-8">
             Conecte sua carteira para comprar figurinhas
           </p>
@@ -48,11 +55,15 @@ export default function LojaPage() {
 
         {/* Informações da Carteira */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Sua Carteira</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Sua Carteira
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-500">Endereço:</p>
-              <p className="font-mono text-sm text-gray-800 break-all">{wallet}</p>
+              <p className="font-mono text-sm text-gray-800 break-all">
+                {wallet}
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Saldo (Sepolia):</p>
@@ -105,26 +116,41 @@ export default function LojaPage() {
 
         {/* Instruções */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-blue-800 mb-2">📝 Como Usar:</h3>
+          <h3 className="text-lg font-semibold text-blue-800 mb-2">
+            📝 Como Usar:
+          </h3>
           <ol className="list-decimal list-inside space-y-2 text-blue-900">
-            <li>Certifique-se de estar conectado à rede <strong>Sepolia</strong> no MetaMask</li>
-            <li>Tenha saldo suficiente de ETH na Sepolia (você pode obter ETH de teste em faucets)</li>
-            <li>Clique em "Comprar Pacote" para adquirir 5 figurinhas aleatórias</li>
+            <li>
+              Certifique-se de estar conectado à rede <strong>Sepolia</strong>{" "}
+              no MetaMask
+            </li>
+            <li>
+              Tenha saldo suficiente de ETH na Sepolia (você pode obter ETH de
+              teste em faucets)
+            </li>
+            <li>
+              Clique em "Comprar Pacote" para adquirir 5 figurinhas aleatórias
+            </li>
             <li>Confirme a transação no MetaMask</li>
             <li>Aguarde a confirmação da transação na blockchain</li>
           </ol>
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded">
             <p className="text-yellow-800 text-sm">
-              ⚠️ <strong>Importante:</strong> Você precisa substituir o endereço do contrato no código
-              (arquivo <code className="bg-yellow-200 px-1 rounded">app/loja/page.tsx</code>) 
-              após fazer o deploy do smart contract na rede Sepolia.
+              ⚠️ <strong>Importante:</strong> Você precisa substituir o endereço
+              do contrato no código (arquivo{" "}
+              <code className="bg-yellow-200 px-1 rounded">
+                app/loja/page.tsx
+              </code>
+              ) após fazer o deploy do smart contract na rede Sepolia.
             </p>
           </div>
         </div>
 
         {/* Links Úteis */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mt-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">🔗 Links Úteis:</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            🔗 Links Úteis:
+          </h3>
           <ul className="space-y-2 text-gray-700">
             <li>
               <a

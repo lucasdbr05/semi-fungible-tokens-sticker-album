@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import contractInfo from "../../../contract-info.json";
 
 // Endereço do contrato ERC-1155 na Sepolia
-const CONTRACT_ADDRESS = "0x7a6153E88838843a65dF29860Eb4EDe77d204351";
+const CONTRACT_ADDRESS = contractInfo.address;
+console.log(CONTRACT_ADDRESS);
 
 // IDs das figurinhas (1 a 20)
 const STICKERS = Array.from({ length: 20 }, (_, i) => i + 1);
 
 // ABI mínima do ERC-1155
 const abi = [
-  "function balanceOf(address account, uint256 id) view returns (uint256)"
+  "function balanceOf(address account, uint256 id) view returns (uint256)",
 ];
 
 interface Metadata {
@@ -46,7 +48,7 @@ export default function ColecaoPage() {
       meta[id] = {
         name: json.name,
         team: json.time,
-        image: json.image
+        image: json.image,
       };
     }
 
@@ -95,7 +97,9 @@ export default function ColecaoPage() {
       </h1>
 
       {loading ? (
-        <p className="text-center text-gray-300 text-lg">Carregando coleção...</p>
+        <p className="text-center text-gray-300 text-lg">
+          Carregando coleção...
+        </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {STICKERS.map((id) => {
@@ -106,12 +110,9 @@ export default function ColecaoPage() {
 
             return (
               <div key={id} className="flex flex-col items-center">
-
                 {/* FIGURINHA ESTILO PANINI */}
                 <div className="relative bg-white border-4 border-white rounded-xl shadow-xl p-2 flex flex-col w-full">
-
                   <div className="border-4 border-yellow-500 rounded-lg p-1 bg-black/10 flex flex-col">
-
                     {/* LOGO DA COPA */}
                     <img
                       src="/icons/worldcup.png"
@@ -135,15 +136,21 @@ export default function ColecaoPage() {
 
                     {/* NOME + BANDEIRA */}
                     <div className="flex items-center justify-between mt-2">
-
                       <div className="flex items-center gap-1">
-                        <img src="/icons/brazil.png" className="w-5 h-5" alt="Flag" />
-                        <span className="text-xs font-bold text-green-800">BRA</span>
+                        <img
+                          src="/icons/brazil.png"
+                          className="w-5 h-5"
+                          alt="Flag"
+                        />
+                        <span className="text-xs font-bold text-green-800">
+                          BRA
+                        </span>
                       </div>
 
-                      <span className="text-xs font-bold text-gray-700">{data.name}</span>
+                      <span className="text-xs font-bold text-gray-700">
+                        {data.name}
+                      </span>
                     </div>
-
                   </div>
                 </div>
 
