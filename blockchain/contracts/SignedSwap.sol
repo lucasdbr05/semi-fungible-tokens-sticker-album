@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
 
 /* How it works explained by Cauezin semi drunk:
@@ -15,9 +15,10 @@ import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
     If the swap is possible: Sign is valid, nonces are valid, date is valid, both users have the tokens they are giving, it happens 
  */
 
-contract ERC1155SignedSwap {
+contract ERC1155SignedSwap is EIP712 {
     using ECDSA for bytes32;
-    using MessageHashUtils for bytes32;
+
+    constructor() EIP712("ERC1155SignedSwap", "1") {}
 
     // Tracks used nonces for makers
     mapping(address => mapping(uint256 => bool)) public usedNonces;
@@ -33,7 +34,7 @@ contract ERC1155SignedSwap {
         uint256[] amountWant
     );
 
-struct Order {
+    struct Order {
         address maker;          //A
         address tokenGive;      //Token contract - could be array but its single as every token should come from the album contract
         uint256[] tokenIdGive;  //A gives
@@ -44,9 +45,38 @@ struct Order {
         address taker;          //Optional: if set to 0x, anyone can claim. else, only taker
         uint256 nonce;          //Used to prevent reuse
         uint256 deadline;       //Sets time limit 
-}
+    }
 
-function executeOrder(Order calldata order, bytes calldata signature) external {
+    bytes32 private constant ORDER_TYPEHASH = keccak256(
+        "Order(address maker,address tokenGive,bytes32 tokenIdGiveHash,bytes32 amountGiveHash,address tokenWant,bytes32 tokenIdWantHash,bytes32 amountWantHash,address taker,uint256 nonce,uint256 deadline)"
+    );
+
+    function _hashOrder(Order calldata order) internal view returns (bytes32) {
+        bytes32 tokenIdGiveHash = keccak256(abi.encodePacked(order.tokenIdGive));
+        bytes32 amountGiveHash = keccak256(abi.encodePacked(order.amountGive));
+        bytes32 tokenIdWantHash = keccak256(abi.encodePacked(order.tokenIdWant));
+        bytes32 amountWantHash = keccak256(abi.encodePacked(order.amountWant));
+
+        return _hashTypedDataV4(
+            keccak256(
+                abi.encode(
+                    ORDER_TYPEHASH,
+                    order.maker,
+                    order.tokenGive,
+                    tokenIdGiveHash,
+                    amountGiveHash,
+                    order.tokenWant,
+                    tokenIdWantHash,
+                    amountWantHash,
+                    order.taker,
+                    order.nonce,
+                    order.deadline
+                )
+            )
+        );
+    }
+
+    function executeOrder(Order calldata order, bytes calldata signature) external {
         require(block.timestamp <= order.deadline, "Order expired");
         require(!usedNonces[order.maker][order.nonce], "Nonce already used");
 
@@ -58,24 +88,10 @@ function executeOrder(Order calldata order, bytes calldata signature) external {
         }
 
         // Hash the full order
-        bytes32 hash = keccak256(
-            abi.encode(
-                order.maker,
-                order.tokenGive,
-                order.tokenIdGive,
-                order.amountGive,
-                order.tokenWant,
-                order.tokenIdWant,
-                order.amountWant,
-                order.taker,
-                order.nonce,
-                order.deadline,
-                address(this)
-            )
-        ).toEthSignedMessageHash(); 
+        bytes32 hash = _hashOrder(order);
 
         // Verify signature
-        require(hash.recover(signature) == order.maker, "Invalid signature");
+        require(ECDSA.recover(hash, signature) == order.maker, "Invalid signature");
 
         // Mark nonce as used
         usedNonces[order.maker][order.nonce] = true;
