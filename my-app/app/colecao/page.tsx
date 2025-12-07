@@ -2,7 +2,7 @@
 
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import contractInfo from "../../../contract-info.json";
+import contractInfo from "../../contract-info.json";
 
 // Endereço do contrato ERC-1155 na Sepolia
 const CONTRACT_ADDRESS = contractInfo.address;

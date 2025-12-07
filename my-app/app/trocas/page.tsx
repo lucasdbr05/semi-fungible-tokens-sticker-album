@@ -1,0 +1,128 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import CreateOrderModal from "@/components/CreateOrderModal";
+import OrderCard from "@/components/OrderCard";
+
+export default function TrocasPage() {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+
+  async function loadOrders() {
+    setLoading(true);
+
+    try {
+      const q = query(collection(db, "orders"));
+      const snapshot = await getDocs(q);
+      console.log("📚 Total de documentos encontrados:", snapshot.size);
+      snapshot.forEach(d => console.log("📄 DOC:", d.id, d.data()));
+
+      const parsedOrders = snapshot.docs.map(doc => {
+        const raw = doc.data();
+
+        console.log("📄 Order bruta recebida:", raw);
+
+        const normalized = {
+          id: doc.id,
+
+          maker: raw.maker ?? "",
+          taker: raw.taker ?? "0x0",
+
+          tokenGive: raw.tokenGive ?? "",
+          tokenWant: raw.tokenWant ?? "",
+
+          tokenIdGive: Array.isArray(raw.tokenIdGive)
+            ? raw.tokenIdGive.map(Number)
+            : [Number(raw.tokenIdGive)],
+
+          amountGive: Array.isArray(raw.amountGive)
+            ? raw.amountGive.map(Number)
+            : [Number(raw.amountGive)],
+
+          tokenIdWant: Array.isArray(raw.tokenIdWant)
+            ? raw.tokenIdWant.map(Number)
+            : [Number(raw.tokenIdWant)],
+
+          amountWant: Array.isArray(raw.amountWant)
+            ? raw.amountWant.map(Number)
+            : [Number(raw.amountWant)],
+
+          nonce: Number(raw.nonce) || 0,
+
+          // deadline pode vir como Firestore Timestamp OU número
+          deadline: raw.deadline?.seconds
+            ? raw.deadline.seconds * 1000
+            : Number(raw.deadline),
+
+          createdAt: raw.createdAt?.seconds
+            ? raw.createdAt.seconds * 1000
+            : raw.createdAt ?? null,
+        };
+
+        console.log("✅ Order normalizada:", normalized);
+
+        return normalized;
+      });
+
+      setOrders(parsedOrders);
+    } catch (err) {
+      console.error("🔥 Erro ao carregar orders:", err);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  return (
+    <div className="min-h-screen p-6 bg-gradient-to-b from-green-50 to-white">
+      <div className="max-w-4xl mx-auto">
+
+        <h1 className="text-4xl font-bold text-green-700 mb-8 text-center">
+          Trocas de Figurinhas 🔄
+        </h1>
+
+        {/* Botão Criar */}
+        <div className="flex justify-end mb-6">
+          <button
+            onClick={() => setOpenModal(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-xl shadow"
+          >
+            ➕ Criar Order
+          </button>
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <p className="text-center text-gray-600 text-lg">Carregando...</p>
+        )}
+
+        {/* Vazio */}
+        {!loading && orders.length === 0 && (
+          <p className="text-center text-gray-600 text-lg">Nenhuma order criada ainda.</p>
+        )}
+
+        {/* Lista */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {orders.map(order => (
+            <OrderCard key={order.id} order={order} />
+          ))}
+        </div>
+
+        {/* Modal */}
+        <CreateOrderModal
+          isOpen={openModal}
+          onClose={() => {
+            setOpenModal(false);
+            loadOrders();
+          }}
+        />
+      </div>
+    </div>
+  );
+}

@@ -3,7 +3,7 @@
 import BuyPackComponent from "@/components/BuyPack";
 import useBalance from "@/hooks/useBalance";
 import { useState } from "react";
-import contractInfo from "../../../contract-info.json";
+import contractInfo from "../../contract-info.json";
 
 // Substitua pelo endereço do seu contrato após o deploy na Sepolia
 const CONTRACT_ADDRESS = contractInfo.address;
