@@ -68,7 +68,7 @@ export default function Navbar() {
                 Início
               </Link>
 
-              <Link href="/contato" className="text-green-700 font-medium hover:text-green-900 transition">
+              <Link href="/sobre" className="text-green-700 font-medium hover:text-green-900 transition">
                 Contato
               </Link>
             </>
@@ -78,17 +78,17 @@ export default function Navbar() {
           {logged && (
             <>
               <Link
-                href="/loja"
-                className="text-green-700 font-medium hover:text-green-900 transition"
-              >
-                Loja
-              </Link>
-
-              <Link
                 href="/colecao"
                 className="text-green-700 font-medium hover:text-green-900 transition"
               >
                 Minhas Figurinhas
+              </Link>
+              
+              <Link
+                href="/loja"
+                className="text-green-700 font-medium hover:text-green-900 transition"
+              >
+                Loja
               </Link>
 
               <Link

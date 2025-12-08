@@ -14,13 +14,12 @@ export default function TrocasPage() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [openAcceptModal, setOpenAcceptModal] = useState(false);
-  const [savedWallet, setSavedWallet] = useState<string | null>("");
+  const wallet =
+    typeof window !== "undefined"
+      ? localStorage.getItem("wallet_address")
+      : null;
+  const [savedWallet, setSavedWallet] = useState<string | null>(wallet);
 
-  useEffect(() => {
-    // roda apenas no cliente
-    const wallet = localStorage.getItem("wallet_address");
-    setSavedWallet(wallet);
-  }, []);
   
   async function loadOrders() {
     setLoading(true);
