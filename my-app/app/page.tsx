@@ -133,15 +133,10 @@ export default function LandingPage() {
 
 
       {/* Footer */}
-<<<<<<< HEAD
       <footer className="bg-gray-100 py-6 mt-auto">
         <div className="max-w-5xl mx-auto text-center text-gray-600 text-sm">
           © {new Date().getFullYear()} Álbum de Figurinhas (Exatas Cup). Todos os direitos reservados.
         </div>
-=======
-      <footer className="mt-24 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Sticker Album — Collectors Platform
->>>>>>> a398068c6c0aff567709b8cc8c6bda53fd54a328
       </footer>
     </main>
   );
