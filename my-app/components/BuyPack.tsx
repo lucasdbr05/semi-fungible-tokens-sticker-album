@@ -21,46 +21,46 @@ export default function BuyPackComponent({ contractAddress, contractABI, onSucce
 
     try {
       if (typeof window.ethereum === "undefined") {
-        throw new Error("MetaMask não detectado");
+        throw new Error("MetaMask not detected");
       }
 
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      // Verificar se estamos na rede Sepolia
+      // Check if we are on Sepolia network
       const network = await provider.getNetwork();
       if (network.chainId !== BigInt(11155111)) {
-        throw new Error("Por favor, conecte-se à rede Sepolia no MetaMask");
+        throw new Error("Please connect to the Sepolia network on MetaMask");
       }
 
-      // Conectar ao contrato
+      // Connect to contract
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      // Obter preço do pacote
+      // Get pack price
       const packPrice = await contract.packPrice();
-      console.log("Preço do pacote:", ethers.formatEther(packPrice), "ETH");
+      console.log("Pack price:", ethers.formatEther(packPrice), "ETH");
 
-      // Verificar se o usuário tem saldo suficiente
+      // Check if user has enough balance
       const balance = await provider.getBalance(await signer.getAddress());
-      console.log("Saldo da carteira:", ethers.formatEther(balance), "ETH");
+      console.log("Wallet balance:", ethers.formatEther(balance), "ETH");
 
       if (balance < packPrice) {
-        throw new Error(`Saldo insuficiente. Você precisa de ${ethers.formatEther(packPrice)} ETH + gas fees`);
+        throw new Error(`Insufficient balance. You need ${ethers.formatEther(packPrice)} ETH + gas fees`);
       }
 
-      // Comprar pacote
-      console.log("Enviando transação buyPack com valor:", ethers.formatEther(packPrice), "ETH");
+      // Buy pack
+      console.log("Sending buyPack transaction with value:", ethers.formatEther(packPrice), "ETH");
       const tx = await contract.buyPack({ 
         value: packPrice,
-        gasLimit: 500000 // Definir gas limit explícito
+        gasLimit: 500000 // Set explicit gas limit
       });
       
-      console.log("Transação enviada:", tx.hash);
-      setSuccess(`Transação enviada! Hash: ${tx.hash.substring(0, 10)}... Aguardando confirmação...`);
+      console.log("Transaction sent:", tx.hash);
+      setSuccess(`Transaction sent! Hash: ${tx.hash.substring(0, 10)}... Waiting for confirmation...`);
       
       const receipt = await tx.wait();
       
-      // Extrair IDs das figurinhas do evento
+      // Extract sticker IDs from event
       const event = receipt.logs.find((log: any) => {
         try {
           const parsed = contract.interface.parseLog(log);
@@ -76,28 +76,28 @@ export default function BuyPackComponent({ contractAddress, contractABI, onSucce
         tokenIds = parsed?.args.tokenIds.map((id: any) => id.toString()) || [];
       }
 
-      setSuccess(`Pacote comprado com sucesso! Figurinhas: ${tokenIds.join(", ")}`);
+      setSuccess(`Pack purchased successfully! Stickers: ${tokenIds.join(", ")}`);
       
       if (onSuccess) {
         onSuccess(tokenIds);
       }
     } catch (err) {
-      console.error("Erro completo:", err);
+      console.error("Full error:", err);
       
-      let errorMessage = "Erro ao comprar pacote";
+      let errorMessage = "Error buying pack";
       
       if (err instanceof Error) {
         errorMessage = err.message;
         
-        // Erros específicos do MetaMask/Ethers
+        // Specific MetaMask/Ethers errors
         if (errorMessage.includes("user rejected")) {
-          errorMessage = "Transação cancelada pelo usuário";
+          errorMessage = "Transaction cancelled by user";
         } else if (errorMessage.includes("insufficient funds")) {
-          errorMessage = "Saldo insuficiente para pagar gas fees";
+          errorMessage = "Insufficient funds for gas fees";
         } else if (errorMessage.includes("CALL_EXCEPTION")) {
-          errorMessage = "Erro ao executar contrato. Verifique se o contrato está correto e se você tem ETH suficiente.";
+          errorMessage = "Error executing contract. Check if the contract is correct and if you have enough ETH.";
         } else if (errorMessage.includes("No stickers available")) {
-          errorMessage = "Não há figurinhas disponíveis no momento";
+          errorMessage = "No stickers available at the moment";
         }
       }
       
@@ -109,14 +109,14 @@ export default function BuyPackComponent({ contractAddress, contractABI, onSucce
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-md">
-      <h2 className="text-2xl font-bold text-green-700 mb-4">Comprar Pacote</h2>
+      <h2 className="text-2xl font-bold text-green-700 mb-4">Buy Pack</h2>
       
       <div className="mb-4">
         <p className="text-gray-700">
-          Cada pacote contém <span className="font-bold">5 figurinhas aleatórias</span>
+          Each pack contains <span className="font-bold">5 random stickers</span>
         </p>
         <p className="text-2xl font-bold text-green-600 mt-2">
-          Preço: 0.001 ETH
+          Price: 0.001 ETH
         </p>
       </div>
 
@@ -137,11 +137,11 @@ export default function BuyPackComponent({ contractAddress, contractABI, onSucce
         disabled={loading}
         className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition"
       >
-        {loading ? "Processando..." : "Comprar Pacote"}
+        {loading ? "Processing..." : "Buy Pack"}
       </button>
 
       <p className="text-sm text-gray-500 mt-4">
-        * Você precisa ter a rede Sepolia configurada no MetaMask
+        * You need to have the Sepolia network configured in MetaMask
       </p>
     </div>
   );
