@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import CreateOrderModal from "@/components/CreateOrderModal";
 import OrderCard from "@/components/OrderCard";
+import { collection, getDocs, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import contractInfo from "../../contract-info.json";
+import { db } from "../../firebase";
 
 export default function TrocasPage() {
+  const savedWallet = localStorage.getItem("wallet_address") as string;
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -18,9 +20,9 @@ export default function TrocasPage() {
       const q = query(collection(db, "orders"));
       const snapshot = await getDocs(q);
       console.log("📚 Total de documentos encontrados:", snapshot.size);
-      snapshot.forEach(d => console.log("📄 DOC:", d.id, d.data()));
+      snapshot.forEach((d) => console.log("📄 DOC:", d.id, d.data()));
 
-      const parsedOrders = snapshot.docs.map(doc => {
+      const parsedOrders = snapshot.docs.map((doc) => {
         const raw = doc.data();
 
         console.log("📄 Order bruta recebida:", raw);
@@ -82,7 +84,6 @@ export default function TrocasPage() {
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-4xl mx-auto">
-
         <h1 className="text-4xl font-bold text-green-700 mb-8 text-center">
           Trocas de Figurinhas 🔄
         </h1>
@@ -104,18 +105,22 @@ export default function TrocasPage() {
 
         {/* Vazio */}
         {!loading && orders.length === 0 && (
-          <p className="text-center text-gray-600 text-lg">Nenhuma order criada ainda.</p>
+          <p className="text-center text-gray-600 text-lg">
+            Nenhuma order criada ainda.
+          </p>
         )}
 
         {/* Lista */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {orders.map(order => (
+          {orders.map((order) => (
             <OrderCard key={order.id} order={order} />
           ))}
         </div>
 
         {/* Modal */}
         <CreateOrderModal
+          userWallet={savedWallet}
+          albumAddress={contractInfo.address}
           isOpen={openModal}
           onClose={() => {
             setOpenModal(false);
