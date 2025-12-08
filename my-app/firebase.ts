@@ -2,14 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCJKi-S5qDhxnjmsbJclXq6lANyZqzDu48",
-  authDomain: "bitcoin-47078.firebaseapp.com",
-  projectId: "bitcoin-47078",
-  storageBucket: "bitcoin-47078.firebasestorage.app",
-  messagingSenderId: "569996274570",
-  appId: "1:569996274570:web:d285446d95aad6395f3673"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
-
 
 const app = initializeApp(firebaseConfig);
 
