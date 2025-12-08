@@ -133,20 +133,7 @@ export default function CreateOrderModal({
         </h2>
 
         <div className="space-y-3">
-          <input
-            className="input"
-            placeholder="Maker"
-            value={maker}
-            onChange={(e) => setMaker(e.target.value)}
-          />
-
-          <input
-            className="input"
-            placeholder="Token Give"
-            value={tokenGive}
-            onChange={(e) => setTokenGive(e.target.value)}
-          />
-
+          
           <input
             className="input"
             placeholder="TokenId Give (ex: 1,3,5)"
@@ -161,12 +148,7 @@ export default function CreateOrderModal({
             onChange={(e) => setAmountGive(e.target.value)}
           />
 
-          <input
-            className="input"
-            placeholder="Token Want"
-            value={tokenWant}
-            onChange={(e) => setTokenWant(e.target.value)}
-          />
+          
 
           <input
             className="input"

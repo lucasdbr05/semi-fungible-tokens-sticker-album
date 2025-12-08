@@ -180,7 +180,7 @@ export default function AcceptOrderModal({
             {order.tokenIdGive.join(", ")} (quantidades{" "}
             {order.amountGive.join(", ")})
           </p>
-          <p>signature: {signature}</p>
+          
         </div>
 
         <button

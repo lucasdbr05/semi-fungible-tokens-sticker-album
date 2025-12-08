@@ -97,7 +97,7 @@ export default function TrocasPage() {
         <div className="flex justify-end mb-6">
           <button
             onClick={() => setOpenModal(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-xl shadow"
+            className="bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700 transition"
           >
             ➕ Criar Order
           </button>
@@ -117,25 +117,59 @@ export default function TrocasPage() {
 
         {/* Lista */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {orders.map((order) => (
-            <div key={order.id} className="relative">
-              <OrderCard order={order} />
+          {orders.map((order) => {
+            // LÓGICA DE VERIFICAÇÃO: Normalizamos para minúsculo para evitar erros de case-sensitive
+            const isMyOrder = savedWallet && order.maker.toLowerCase() === savedWallet.toLowerCase();
 
-              {/* Accept Button */}
-              <button
-                onClick={() => {
-                  setSelectedOrder(order);
-                  setOpenAcceptModal(true);
-                }}
-                className="absolute bottom-3 right-3 bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg shadow hover:bg-green-700 transition"
+            return (
+              <div 
+                key={order.id} 
+                className={`relative border-2 rounded-xl p-2 ${isMyOrder ? 'border-blue-300 bg-blue-50' : 'border-transparent'}`}
               >
-                ✅ Aceitar
-              </button>
-            </div>
-          ))}
+                {/* 1. CABEÇALHO EXPLICATIVO */}
+                <div className="mb-2 text-center text-sm font-semibold">
+                  {isMyOrder ? (
+                    <span className="text-blue-700 block bg-blue-100 py-1 rounded">
+                      👤 Esta é sua oferta <br/>
+                      <span className="text-xs font-normal text-blue-600">
+                        (Você entrega o item de cima e pede o de baixo)
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="text-green-700 block bg-green-100 py-1 rounded">
+                      ✨ Oferta Disponível <br/>
+                      <span className="text-xs font-normal text-green-600">
+                        (Você recebe o item de cima e paga o de baixo)
+                      </span>
+                    </span>
+                  )}
+                </div>
+
+                <OrderCard order={order}
+                userWallet={savedWallet} />
+
+                {/* 2. BOTÃO CONDICIONAL */}
+                {!isMyOrder ? (
+                  <button
+                    onClick={() => {
+                      setSelectedOrder(order);
+                      setOpenAcceptModal(true);
+                    }}
+                    className="absolute bottom-3 right-3 bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg shadow hover:bg-green-700 transition"
+                  >
+                    ✅ Aceitar
+                  </button>
+                ) : (
+                  <div className="absolute bottom-3 right-3 bg-gray-200 text-gray-500 text-xs px-2 py-1 rounded cursor-not-allowed">
+                    Sua ordem
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Modal */}
+        {/* Modais mantidos iguais */}
         <CreateOrderModal
           userWallet={savedWallet}
           albumAddress={contractInfo.address}
