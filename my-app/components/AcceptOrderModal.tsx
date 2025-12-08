@@ -3,6 +3,8 @@
 import { ensureApproval } from "@/app/util/getApproval";
 import { ethers } from "ethers";
 import { useState } from "react";
+import { db } from "../firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const abi = [
   {
@@ -146,6 +148,8 @@ export default function AcceptOrderModal({
 
       alert("Troca executada com sucesso!");
       // Delete order from db
+      await deleteDoc(doc(db, "orders", order.id));
+      
       onClose();
     } catch (err: any) {
       console.error("❌ Error executing order:", err);

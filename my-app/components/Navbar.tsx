@@ -35,13 +35,14 @@ export default function Navbar() {
       console.error("Erro ao conectar carteira:", err);
     }
     
-    router.push("/perfil"); 
+    router.push("/loja"); 
   }
 
   // Desconectar carteira
   function disconnectWallet() {
     localStorage.removeItem("wallet_address");
     setAddress(null);
+    router.push("/"); 
   }
 
   const logged = !!address;

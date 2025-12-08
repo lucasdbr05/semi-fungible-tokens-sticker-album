@@ -9,13 +9,19 @@ import contractInfo from "../../contract-info.json";
 import { db } from "../../firebase";
 
 export default function TrocasPage() {
-  const savedWallet = localStorage.getItem("wallet_address") as string;
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [openAcceptModal, setOpenAcceptModal] = useState(false);
+  const [savedWallet, setSavedWallet] = useState<string | null>("");
 
+  useEffect(() => {
+    // roda apenas no cliente
+    const wallet = localStorage.getItem("wallet_address");
+    setSavedWallet(wallet);
+  }, []);
+  
   async function loadOrders() {
     setLoading(true);
 
@@ -171,7 +177,7 @@ export default function TrocasPage() {
 
         {/* Modais mantidos iguais */}
         <CreateOrderModal
-          userWallet={savedWallet}
+          userWallet={savedWallet ?? ""}
           albumAddress={contractInfo.address}
           isOpen={openModal}
           onClose={() => {
@@ -190,7 +196,7 @@ export default function TrocasPage() {
           signature={selectedOrder?.signature}
           albumAddress={contractInfo.address}
           swapAddress={contractInfo.swap_address}
-          userWallet={savedWallet}
+          userWallet={savedWallet ?? ""}
         />
       </div>
     </div>
