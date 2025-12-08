@@ -94,7 +94,7 @@ export default function CreateOrderModal({
       amountWant: amountWant.split(",").map(Number),
       taker: taker || "0x0000000000000000000000000000000000000000",
       nonce: Math.floor(Math.random() * 1e18),
-      deadline: Math.floor(new Date(deadline).getTime() / 1000), // timestamp em segundos
+      deadline: new Date(deadline).getTime(), // timestamp em segundos
       createdAt: serverTimestamp(),
     };
 

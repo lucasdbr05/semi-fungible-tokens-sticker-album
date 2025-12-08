@@ -1,5 +1,6 @@
 "use client";
 
+import AcceptOrderModal from "@/components/AcceptOrderModal";
 import CreateOrderModal from "@/components/CreateOrderModal";
 import OrderCard from "@/components/OrderCard";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -12,6 +13,8 @@ export default function TrocasPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+  const [openAcceptModal, setOpenAcceptModal] = useState(false);
 
   async function loadOrders() {
     setLoading(true);
@@ -62,6 +65,8 @@ export default function TrocasPage() {
           createdAt: raw.createdAt?.seconds
             ? raw.createdAt.seconds * 1000
             : raw.createdAt ?? null,
+
+          signature: raw.signature ?? "",
         };
 
         console.log("✅ Order normalizada:", normalized);
@@ -113,7 +118,20 @@ export default function TrocasPage() {
         {/* Lista */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
+            <div key={order.id} className="relative">
+              <OrderCard order={order} />
+
+              {/* Accept Button */}
+              <button
+                onClick={() => {
+                  setSelectedOrder(order);
+                  setOpenAcceptModal(true);
+                }}
+                className="absolute bottom-3 right-3 bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg shadow hover:bg-green-700 transition"
+              >
+                ✅ Aceitar
+              </button>
+            </div>
           ))}
         </div>
 
@@ -126,6 +144,19 @@ export default function TrocasPage() {
             setOpenModal(false);
             loadOrders();
           }}
+        />
+        <AcceptOrderModal
+          isOpen={openAcceptModal}
+          onClose={() => {
+            setOpenAcceptModal(false);
+            setSelectedOrder(null);
+            loadOrders();
+          }}
+          order={selectedOrder}
+          signature={selectedOrder?.signature}
+          albumAddress={contractInfo.address}
+          swapAddress={contractInfo.swap_address}
+          userWallet={savedWallet}
         />
       </div>
     </div>
