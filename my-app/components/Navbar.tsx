@@ -19,7 +19,7 @@ export default function Navbar() {
   // Conectar carteira
   async function connectWallet() {
     if (!window.ethereum) {
-      alert("MetaMask não detectado!");
+      alert("MetaMask not detected!");
       return;
     }
 
@@ -32,7 +32,7 @@ export default function Navbar() {
         localStorage.setItem("wallet_address", accounts[0]);
       }
     } catch (err) {
-      console.error("Erro ao conectar carteira:", err);
+      console.error("Error connecting wallet:", err);
     }
     
     router.push("/loja"); 
@@ -56,7 +56,7 @@ export default function Navbar() {
           href="/"
           className="text-2xl font-extrabold text-green-700 drop-shadow-sm hover:opacity-80 transition"
         >
-          Figurinhas ⚽
+          Stickers ⚽
         </Link>
 
         {/* Navegação */}
@@ -65,11 +65,11 @@ export default function Navbar() {
           {!logged && (
             <>
               <Link href="/" className="text-green-700 font-medium hover:text-green-900 transition">
-                Início
+                Home
               </Link>
 
               <Link href="/sobre" className="text-green-700 font-medium hover:text-green-900 transition">
-                Contato
+                Contact
               </Link>
             </>
           )}
@@ -81,21 +81,21 @@ export default function Navbar() {
                 href="/colecao"
                 className="text-green-700 font-medium hover:text-green-900 transition"
               >
-                Minhas Figurinhas
+                My Stickers
               </Link>
               
               <Link
                 href="/loja"
                 className="text-green-700 font-medium hover:text-green-900 transition"
               >
-                Loja
+                Store
               </Link>
 
               <Link
                 href="/trocas"
                 className="text-green-700 font-medium hover:text-green-900 transition"
               >
-                Trocas
+                Trades
               </Link>
             </>
           )}
@@ -107,14 +107,14 @@ export default function Navbar() {
             onClick={connectWallet}
             className="hidden md:inline px-5 py-2 bg-green-600 text-white rounded-full shadow hover:bg-green-700 transition"
           >
-            Conectar Carteira
+            Connect Wallet
           </button>
         ) : (
           <button
             onClick={disconnectWallet}
             className="hidden md:inline px-5 py-2 bg-red-600 text-white rounded-full shadow hover:bg-red-700 transition"
           >
-            Sair
+            Logout
           </button>
         )}
       </div>

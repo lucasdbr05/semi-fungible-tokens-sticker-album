@@ -33,7 +33,7 @@ export default function CreateOrderModal({
   if (!isOpen) return null;
 
   async function signOrder(order: any, contractAddress: string) {
-    if (!window.ethereum) throw new Error("MetaMask não encontrada");
+    if (!window.ethereum) throw new Error("MetaMask not found");
 
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -100,7 +100,7 @@ export default function CreateOrderModal({
 
     try {
       // 🔏 gerar assinatura EIP-712
-      alert("É necessário fornecer permissão e assinar");
+      alert("Permission and signature required");
       await ensureApproval(albumAddress, userWallet, contractInfo.swap_address);
       const signature = await signOrder(newOrder, contractInfo.swap_address);
 
@@ -115,9 +115,9 @@ export default function CreateOrderModal({
 
       onClose();
     } catch (err) {
-      console.error("Erro ao criar ou assinar ordem:", err);
+      console.error("Error creating or signing order:", err);
       alert(
-        "Falha ao assinar a ordem. Verifique se a carteira está conectada."
+        "Failed to sign order. Please check if your wallet is connected."
       );
     }
   }
@@ -129,21 +129,21 @@ export default function CreateOrderModal({
         className="bg-white rounded-xl p-6 w-full max-w-md shadow"
       >
         <h2 className="text-2xl font-bold text-green-700 mb-4 text-center">
-          Criar Nova Order
+          Create New Order
         </h2>
 
         <div className="space-y-3">
           
           <input
             className="input"
-            placeholder="TokenId Give (ex: 1,3,5)"
+            placeholder="TokenId Give (e.g. 1,3,5)"
             value={tokenIdGive}
             onChange={(e) => setTokenIdGive(e.target.value)}
           />
 
           <input
             className="input"
-            placeholder="Amounts Give (ex: 1,1,2)"
+            placeholder="Amounts Give (e.g. 1,1,2)"
             value={amountGive}
             onChange={(e) => setAmountGive(e.target.value)}
           />
@@ -152,21 +152,21 @@ export default function CreateOrderModal({
 
           <input
             className="input"
-            placeholder="TokenId Want (ex: 2,4)"
+            placeholder="TokenId Want (e.g. 2,4)"
             value={tokenIdWant}
             onChange={(e) => setTokenIdWant(e.target.value)}
           />
 
           <input
             className="input"
-            placeholder="Amounts Want (ex: 1,2)"
+            placeholder="Amounts Want (e.g. 1,2)"
             value={amountWant}
             onChange={(e) => setAmountWant(e.target.value)}
           />
 
           <input
             className="input"
-            placeholder="Taker (opcional)"
+            placeholder="Taker (optional)"
             value={taker}
             onChange={(e) => setTaker(e.target.value)}
           />
@@ -179,7 +179,7 @@ export default function CreateOrderModal({
           />
 
           <button className="w-full bg-green-600 text-white rounded-xl p-3">
-            Criar Order
+            Create Order
           </button>
 
           <button
@@ -187,7 +187,7 @@ export default function CreateOrderModal({
             className="w-full bg-gray-200 p-3 rounded-xl"
             onClick={onClose}
           >
-            Cancelar
+            Cancel
           </button>
         </div>
       </form>

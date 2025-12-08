@@ -36,10 +36,10 @@ export default function LojaPage() {
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-8">
         <div className="max-w-4xl mx-auto text-center mt-20">
           <h1 className="text-4xl font-bold text-green-700 mb-4">
-            Loja de Figurinhas
+            Sticker Store
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Conecte sua carteira para comprar figurinhas
+            Connect your wallet to buy stickers
           </p>
         </div>
       </div>
@@ -50,23 +50,23 @@ export default function LojaPage() {
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-green-700 mb-8 text-center">
-          Loja de Figurinhas ⚽
+          Sticker Store ⚽
         </h1>
 
         {/* Informações da Carteira */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Sua Carteira
+            Your Wallet
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Endereço:</p>
+              <p className="text-sm text-gray-500">Address:</p>
               <p className="font-mono text-sm text-gray-800 break-all">
                 {wallet}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Saldo (Sepolia):</p>
+              <p className="text-sm text-gray-500">Balance (Sepolia):</p>
               {error && wrongNetwork ? (
                 <div>
                   <p className="text-red-600 text-sm mb-2">{error}</p>
@@ -74,12 +74,12 @@ export default function LojaPage() {
                     onClick={switchToSepolia}
                     className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition"
                   >
-                    🔄 Trocar para Sepolia
+                    🔄 Switch to Sepolia
                   </button>
                 </div>
               ) : (
                 <p className="text-2xl font-bold text-green-600">
-                  {balance !== null ? `${balance} ETH` : "Carregando..."}
+                  {balance !== null ? `${balance} ETH` : "Loading..."}
                 </p>
               )}
             </div>
@@ -99,7 +99,7 @@ export default function LojaPage() {
         {purchasedStickers.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold text-green-700 mb-4">
-              Figurinhas Compradas Nesta Sessão
+              Stickers Purchased in This Session
             </h2>
             <div className="grid grid-cols-5 gap-4">
               {purchasedStickers.map((id, index) => (
@@ -117,31 +117,31 @@ export default function LojaPage() {
         {/* Instruções */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
           <h3 className="text-lg font-semibold text-blue-800 mb-2">
-            📝 Como Usar:
+            📝 How to Use:
           </h3>
           <ol className="list-decimal list-inside space-y-2 text-blue-900">
             <li>
-              Certifique-se de estar conectado à rede <strong>Sepolia</strong>{" "}
-              no MetaMask
+              Make sure you are connected to the <strong>Sepolia</strong>{" "}
+              network on MetaMask
             </li>
             <li>
-              Tenha saldo suficiente de ETH na Sepolia (você pode obter ETH de
-              teste em faucets)
+              Have enough ETH balance on Sepolia (you can get test ETH from
+              faucets)
             </li>
             <li>
-              Clique em "Comprar Pacote" para adquirir 5 figurinhas aleatórias
+              Click "Buy Pack" to acquire 5 random stickers
             </li>
-            <li>Confirme a transação no MetaMask</li>
-            <li>Aguarde a confirmação da transação na blockchain</li>
+            <li>Confirm the transaction on MetaMask</li>
+            <li>Wait for the transaction confirmation on the blockchain</li>
           </ol>
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded">
             <p className="text-yellow-800 text-sm">
-              ⚠️ <strong>Importante:</strong> Você precisa substituir o endereço
-              do contrato no código (arquivo{" "}
+              ⚠️ <strong>Important:</strong> You need to replace the contract address
+              in the code (file{" "}
               <code className="bg-yellow-200 px-1 rounded">
                 app/loja/page.tsx
               </code>
-              ) após fazer o deploy do smart contract na rede Sepolia.
+              ) after deploying the smart contract on the Sepolia network.
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function LojaPage() {
         {/* Links Úteis */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mt-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            🔗 Links Úteis:
+            🔗 Useful Links:
           </h3>
           <ul className="space-y-2 text-gray-700">
             <li>
@@ -159,7 +159,7 @@ export default function LojaPage() {
                 rel="noopener noreferrer"
                 className="text-green-600 hover:underline"
               >
-                → Sepolia Faucet (obter ETH de teste)
+                → Sepolia Faucet (get test ETH)
               </a>
             </li>
             <li>
@@ -169,7 +169,7 @@ export default function LojaPage() {
                 rel="noopener noreferrer"
                 className="text-green-600 hover:underline"
               >
-                → Sepolia Etherscan (explorador de blocos)
+                → Sepolia Etherscan (block explorer)
               </a>
             </li>
             <li>
@@ -179,7 +179,7 @@ export default function LojaPage() {
                 rel="noopener noreferrer"
                 className="text-green-600 hover:underline"
               >
-                → Adicionar Sepolia ao MetaMask
+                → Add Sepolia to MetaMask
               </a>
             </li>
           </ul>

@@ -27,13 +27,13 @@ export default function TrocasPage() {
     try {
       const q = query(collection(db, "orders"));
       const snapshot = await getDocs(q);
-      console.log("📚 Total de documentos encontrados:", snapshot.size);
+      console.log("📚 Total documents found:", snapshot.size);
       snapshot.forEach((d) => console.log("📄 DOC:", d.id, d.data()));
 
       const parsedOrders = snapshot.docs.map((doc) => {
         const raw = doc.data();
 
-        console.log("📄 Order bruta recebida:", raw);
+        console.log("📄 Raw order received:", raw);
 
         const normalized = {
           id: doc.id,
@@ -74,14 +74,14 @@ export default function TrocasPage() {
           signature: raw.signature ?? "",
         };
 
-        console.log("✅ Order normalizada:", normalized);
+        console.log("✅ Normalized order:", normalized);
 
         return normalized;
       });
 
       setOrders(parsedOrders);
     } catch (err) {
-      console.error("🔥 Erro ao carregar orders:", err);
+      console.error("🔥 Error loading orders:", err);
     }
 
     setLoading(false);
@@ -95,7 +95,7 @@ export default function TrocasPage() {
     <div className="min-h-screen p-6 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-green-700 mb-8 text-center">
-          Trocas de Figurinhas 🔄
+          Sticker Trades 🔄
         </h1>
 
         {/* Botão Criar */}
@@ -104,19 +104,19 @@ export default function TrocasPage() {
             onClick={() => setOpenModal(true)}
             className="bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700 transition"
           >
-            ➕ Criar Order
+            ➕ Create Order
           </button>
         </div>
 
         {/* Loading */}
         {loading && (
-          <p className="text-center text-gray-600 text-lg">Carregando...</p>
+          <p className="text-center text-gray-600 text-lg">Loading...</p>
         )}
 
         {/* Vazio */}
         {!loading && orders.length === 0 && (
           <p className="text-center text-gray-600 text-lg">
-            Nenhuma order criada ainda.
+            No orders created yet.
           </p>
         )}
 
@@ -135,23 +135,23 @@ export default function TrocasPage() {
                 <div className="mb-2 text-center text-sm font-semibold">
                   {isMyOrder ? (
                     <span className="text-blue-700 block bg-blue-100 py-1 rounded">
-                      👤 Esta é sua oferta <br/>
+                      👤 This is your offer <br/>
                       <span className="text-xs font-normal text-blue-600">
-                        (Você entrega o item de cima e pede o de baixo)
+                        (You give the item above and ask for the one below)
                       </span>
                     </span>
                   ) : (
                     <span className="text-green-700 block bg-green-100 py-1 rounded">
-                      ✨ Oferta Disponível <br/>
+                      ✨ Available Offer <br/>
                       <span className="text-xs font-normal text-green-600">
-                        (Você recebe o item de cima e paga o de baixo)
+                        (You receive the item above and pay the one below)
                       </span>
                     </span>
                   )}
                 </div>
 
                 <OrderCard order={order}
-                userWallet={savedWallet} />
+                userWallet={savedWallet ?? ""} />
 
                 {/* 2. BOTÃO CONDICIONAL */}
                 {!isMyOrder ? (
@@ -162,11 +162,11 @@ export default function TrocasPage() {
                     }}
                     className="absolute bottom-3 right-3 bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg shadow hover:bg-green-700 transition"
                   >
-                    ✅ Aceitar
+                    ✅ Accept
                   </button>
                 ) : (
                   <div className="absolute bottom-3 right-3 bg-gray-200 text-gray-500 text-xs px-2 py-1 rounded cursor-not-allowed">
-                    Sua ordem
+                    Your order
                   </div>
                 )}
               </div>

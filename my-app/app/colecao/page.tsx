@@ -27,7 +27,7 @@ export default function ColecaoPage() {
   const [balances, setBalances] = useState<{ [key: number]: number }>({});
   const [metadata, setMetadata] = useState<{ [key: number]: Metadata }>({});
   const [loading, setLoading] = useState(true);
-  const TEAMS = ["Time A", "Time B"];
+  const TEAMS = ["Time A", "Time B"]; 
   const [selectedTeam, setSelectedTeam] = useState("Time A");
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function ColecaoPage() {
   // ---- CONSULTA À BLOCKCHAIN ----
   const loadBalances = async (userWallet: string) => {
     if (!window.ethereum) {
-      alert("MetaMask não detectado!");
+      alert("MetaMask not detected!");
       return;
     }
 
@@ -78,8 +78,8 @@ export default function ColecaoPage() {
       setBalances(results);
       setLoading(false);
     } catch (error) {
-      console.error("Erro ao carregar figurinhas:", error);
-      alert("Erro ao consultar a blockchain.");
+      console.error("Error loading stickers:", error);
+      alert("Error querying the blockchain.");
     }
   };
 
@@ -90,10 +90,10 @@ export default function ColecaoPage() {
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-8">
         <div className="max-w-4xl mx-auto text-center mt-20">
           <h1 className="text-4xl font-bold text-green-700 mb-4">
-            Minhas Figurinhas
+            My Stickers
           </h1>
           <p className="text-xl text-gray-600">
-            Conecte sua carteira para visualizar sua coleção
+            Connect your wallet to view your collection
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function ColecaoPage() {
       <div className="max-w-6xl mx-auto">
 
         <h1 className="text-4xl font-bold text-green-700 mb-10 text-center">
-          Minhas Figurinhas
+          My Stickers
         </h1>
 
         {/* Abas dos times */}
@@ -127,7 +127,7 @@ export default function ColecaoPage() {
         </div>
 
         {loading ? (
-          <p className="text-center text-gray-500 text-lg">Carregando coleção...</p>
+          <p className="text-center text-gray-500 text-lg">Loading collection...</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {STICKERS.map((id) => {

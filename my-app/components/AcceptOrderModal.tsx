@@ -146,7 +146,7 @@ export default function AcceptOrderModal({
       await tx.wait();
       console.log("✅ Swap executed!");
 
-      alert("Troca executada com sucesso!");
+      alert("Trade executed successfully!");
       // Delete order from db
       await deleteDoc(doc(db, "orders", order.id));
       
@@ -154,9 +154,9 @@ export default function AcceptOrderModal({
     } catch (err: any) {
       console.error("❌ Error executing order:", err);
       if (err.code === 4001) {
-        alert("Operação cancelada pelo usuário.");
+        alert("Operation cancelled by user.");
       } else {
-        alert("Falha ao executar a troca. Verifique permissões e saldo.");
+        alert("Failed to execute trade. Check permissions and balance.");
       }
     } finally {
       setLoading(false);
@@ -167,21 +167,21 @@ export default function AcceptOrderModal({
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-white rounded-xl p-6 w-full max-w-md shadow">
         <h2 className="text-2xl font-bold text-green-700 mb-4 text-center">
-          Aceitar Troca
+          Accept Trade
         </h2>
 
         <p className="text-gray-600 mb-4 text-center">
-          Você está prestes a trocar suas figurinhas:
+          You are about to swap your stickers:
         </p>
 
         <div className="bg-gray-50 p-3 rounded-md mb-4 text-sm text-black">
           <p>
-            <b>Você dará as figurinhas de id:</b> {order.tokenIdWant.join(", ")}{" "}
-            (quantidades {order.amountWant.join(", ")})
+            <b>You will give sticker IDs:</b> {order.tokenIdWant.join(", ")}{" "}
+            (amounts {order.amountWant.join(", ")})
           </p>
           <p>
-            <b>Você receberá as figurinhas de id:</b>{" "}
-            {order.tokenIdGive.join(", ")} (quantidades{" "}
+            <b>You will receive sticker IDs:</b>{" "}
+            {order.tokenIdGive.join(", ")} (amounts{" "}
             {order.amountGive.join(", ")})
           </p>
           
@@ -192,11 +192,11 @@ export default function AcceptOrderModal({
           disabled={loading}
           className="w-full bg-green-600 text-white rounded-xl p-3 mb-2"
         >
-          {loading ? "Executando..." : "Confirmar Troca"}
+          {loading ? "Executing..." : "Confirm Trade"}
         </button>
 
         <button onClick={onClose} className="w-full bg-gray-200 p-3 rounded-xl">
-          Cancelar
+          Cancel
         </button>
       </div>
     </div>
