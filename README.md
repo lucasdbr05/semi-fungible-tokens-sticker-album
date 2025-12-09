@@ -393,17 +393,7 @@ The system was successfully deployed on the Ethereum Sepolia testnet with these 
 - **Pack Price:** 0.001 ETH (~$3.50 at current rates)
 - **Stickers Per Pack:** 5 tokens
 
-### 7.2 Gas Cost Analysis
-
-Comparative gas consumption analysis:
-
-| Operation | ERC-721 Approach | ERC-1155 Implementation | Savings |
-|-----------|------------------|-------------------------|---------|
-| Deploy 20 token types | ~20 × 1.5M = 30M gas | ~2.5M gas | 91.6% |
-| Mint 5 tokens | ~5 × 50k = 250k gas | ~120k gas | 52.0% |
-| Batch transfer 5 tokens | ~5 × 45k = 225k gas | ~85k gas | 62.2% |
-
-### 7.3 Security Audit Results
+### 7.2 Security Audit Results
 
 A manual security review found and fixed:
 
