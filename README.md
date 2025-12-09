@@ -21,13 +21,15 @@ This paper discusses the design and implementation of a decentralized digital st
 
 ## 1. Introduction
 
-### 1.1 Background and Motivation
+The project consists of developing a complete ecosystem based on **Web3**, designed to represent digital stickers of players from the Exatas Cup. The core idea was to create an environment where users could **collect, view, buy and trade** digital stickers in a decentralized way, using a real blockchain to record ownership, transfers and interactions.
 
-The rise of blockchain technology and non-fungible tokens (NFTs) has greatly increased the popularity of digital collectibles. Traditional physical sticker albums, which are often seen during sports events, face challenges like counterfeiting, verifying scarcity, and limits on trading across different locations. Blockchain technology addresses these problems by providing cryptographic proof of ownership, transparent supply management, and unrestricted peer-to-peer exchange.
+The Exatas Cup is a futsal championship organized by students of the Institute of Exact Sciences at the University of Brasília (UnB), bringing together students from Mathematics, Computer Science and Statistics. The tournament had editions in 2024 and 2025 and became a significant event in the academic community, promoting integration, healthy competition and engagement among participants. One of the biggest challenges has always been creating visual content to showcase the teams, such as player cards with photos and information. The digital sticker album developed in this project emerged precisely as a modern solution to this problem, offering a practical, fast and interactive way to present rosters, while also enabling gamification through digital collectibles.
 
-The Exatas Cup is an annual futsal championship set up by students in the Mathematics, Computer Science, and Statistics departments at the University of Brasília (UnB). Since it started in 2024, the tournament has become a key event for fostering integration within the academic community. A constant challenge has been creating engaging visual content to display team rosters and player details. This project meets this need by developing a blockchain-based digital sticker album that combines collectibility, gamification, and verifiable ownership.
+To achieve this, we adopted the **ERC-1155** standard, which allows representing multiple stickers inside a single smart contract, reducing gas costs, simplifying management and offering support for semi-fungible items — exactly what a sticker album requires. This standard is widely used in games, collectibles and marketplaces due to its flexibility and efficiency.
 
-### 1.2 Objectives
+The platform not only displays the stickers but also integrates a **P2P trading system** controlled by the smart contract. Purchase operations, listings, acceptances and cancellations are recorded transparently and are fully auditable, ensuring reliability and immutability — fundamental principles in blockchain-based applications.
+
+### 1.1 Objectives
 
 This work aims to build a decentralized application (dApp) that enables:
 
@@ -36,7 +38,7 @@ This work aims to build a decentralized application (dApp) that enables:
 3. **Decentralized Trading System:** Trustless peer-to-peer exchange protocol using cryptographic signatures
 4. **User Interface Integration:** A Web3-enabled frontend for easy interaction with the blockchain via MetaMask wallet
 
-### 1.3 Contributions
+### 1.2 Contributions
 
 The main contributions of this work include:
 
