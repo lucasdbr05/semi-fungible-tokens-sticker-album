@@ -152,8 +152,8 @@ export default function LandingPage() {
               alt="Foto do integrante 3"
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4 border-2 border-green-600"
             />
-            <h3 className="text-xl font-semibold text-gray-900">Nome Completo 3</h3>
-            <p className="text-gray-600 mt-1">Matrícula: 000000000</p>
+            <h3 className="text-xl font-semibold text-gray-900">Lucas Gabriel de Oliveira lima</h3>
+            <p className="text-gray-600 mt-1">Matrícula: 231003406</p>
           </div>
 
           {/* Card 4 */}
