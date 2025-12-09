@@ -190,6 +190,9 @@ export default function ColecaoPage() {
                           <span className="text-xs font-bold text-green-800">
                             BRA
                           </span>
+                          <span className="text-green-800 font-bold">
+                            #{id}
+                          </span>
                         </div>
 
                         <span className="text-xs font-bold text-gray-700">

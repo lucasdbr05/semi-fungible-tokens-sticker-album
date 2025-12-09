@@ -128,16 +128,14 @@ export default function LojaPage() {
               Have enough ETH balance on Sepolia (you can get test ETH from
               faucets)
             </li>
-            <li>
-              Click "Buy Pack" to acquire 5 random stickers
-            </li>
+            <li>Click "Buy Pack" to acquire 5 random stickers</li>
             <li>Confirm the transaction on MetaMask</li>
             <li>Wait for the transaction confirmation on the blockchain</li>
           </ol>
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded">
             <p className="text-yellow-800 text-sm">
-              ⚠️ <strong>Important:</strong> You need to replace the contract address
-              in the code (file{" "}
+              ⚠️ <strong>Important:</strong> You need to replace the contract
+              address in the code (file{" "}
               <code className="bg-yellow-200 px-1 rounded">
                 app/loja/page.tsx
               </code>
@@ -154,7 +152,7 @@ export default function LojaPage() {
           <ul className="space-y-2 text-gray-700">
             <li>
               <a
-                href="https://sepoliafaucet.com/"
+                href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-green-600 hover:underline"
