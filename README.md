@@ -376,7 +376,7 @@ Access the application at: [http://localhost:3000](http://localhost:3000) (for d
 
 ### 6.5 Live Deployment:
 
-- [https://fungible-tokens-sticker-album.vercel.app](https://fungible-tokens-sticker-album.vercel.app)
+- [https://fungible-tokens-sticker-album.vercel.app](https://semi-fungible-tokens-sticker-album.vercel.app)
 
 ---
 
