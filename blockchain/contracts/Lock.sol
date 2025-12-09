@@ -25,7 +25,7 @@ contract Lock is ERC1155, Ownable {
 
     // Override tokenURI (returns the metadata link)
     function uri(uint256 _id) public view override returns (string memory) {
-        return string(abi.encodePacked(baseURI, _id.toString(), ".json"));
+        return string(abi.encodePacked(baseURI,"id_", _id.toString(), ".json"));
     }
 
     // Mint a new figurinha type (admin only)
