@@ -115,7 +115,7 @@ export default function LojaPage() {
         )}
 
         {/* Instruções */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
+        {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
           <h3 className="text-lg font-semibold text-blue-800 mb-2">
             📝 How to Use:
           </h3>
@@ -142,46 +142,7 @@ export default function LojaPage() {
               ) after deploying the smart contract on the Sepolia network.
             </p>
           </div>
-        </div>
-
-        {/* Links Úteis */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mt-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            🔗 Useful Links:
-          </h3>
-          <ul className="space-y-2 text-gray-700">
-            <li>
-              <a
-                href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-600 hover:underline"
-              >
-                → Sepolia Faucet (get test ETH)
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://sepolia.etherscan.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-600 hover:underline"
-              >
-                → Sepolia Etherscan (block explorer)
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://chainlist.org/chain/11155111"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-600 hover:underline"
-              >
-                → Add Sepolia to MetaMask
-              </a>
-            </li>
-          </ul>
-        </div>
+        </div> */}
       </div>
     </div>
   );
